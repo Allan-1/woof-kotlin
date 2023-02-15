@@ -11,7 +11,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,8 +44,22 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
+private fun DogItemButton(expanded: Boolean,
+                  onClick: () -> Unit,
+                  modifier: Modifier = Modifier){
+    IconButton(onClick = onClick) {
+        Icon(imageVector = Icons.Filled.ExpandMore,
+            contentDescription = stringResource(id = R.string.expand_button_content_description),
+            tint = MaterialTheme.colors.secondary
+        )
+    }
+}
+
+@Composable
 fun WoofTopBar(modifier: Modifier = Modifier) {
-    Row(modifier = modifier.background(color = MaterialTheme.colors.primary).fillMaxWidth(),
+    Row(modifier = modifier
+        .background(color = MaterialTheme.colors.primary)
+        .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically) {
         Image(
             painter = painterResource(R.drawable.ic_woof_logo),
@@ -77,6 +93,7 @@ fun DogIcon(@DrawableRes dogIcon: Int, modifier: Modifier = Modifier){
 
 @Composable
 fun DogCard(dog: Dog, modifier: Modifier = Modifier){
+    var expanded by remember { mutableStateOf(false) }
     Card(modifier = modifier.padding(8.dp), elevation = 4.dp) {
         Row(
             modifier
@@ -89,6 +106,11 @@ fun DogCard(dog: Dog, modifier: Modifier = Modifier){
                     modifier = modifier.padding(top = 8.dp),)
                 Text(text = stringResource(id = R.string.years_old, dog.age))
             }
+            Spacer(Modifier.weight(1f))
+            DogItemButton(
+                expanded = expanded,
+                onClick = { }
+            )
         }
     }
 }
